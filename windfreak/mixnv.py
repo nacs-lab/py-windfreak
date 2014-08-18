@@ -1,15 +1,7 @@
 #!/usr/bin/env python
 
-import serial
-import usb.core
-import pyudev
-from time import sleep
+from ._device import Device
 import weakref
-
-try:
-    _unicode = unicode
-except:
-    _unicode = str
 
 class _MixNVFM(object):
     def __init__(self, dev):
@@ -82,33 +74,10 @@ class _MixNVFM(object):
         self._send_cmd(b'b')
 
 
-class MixNV(object):
-    def __wait(self):
-        sleep(0.01)
-
-    def __reset_dev(self):
-        ctx = pyudev.Context()
-        udev = pyudev.Device.from_device_file(ctx, self.__port)
-        # FIXME
-        dev = usb.core.find(idVendor=int(udev['ID_VENDOR_ID'], base=16),
-                            idProduct=int(udev['ID_MODEL_ID'], base=16))
-        dev.reset()
-        self.__wait()
-
-    def __init__(self, port):
-        self.__port = port
-        self.__reset_dev()
-        self.__serial = serial.Serial(port, timeout=0.01, writeTimeout=0.01,
-                                      parity='N', stopbits=1, bytesize=7)
+class MixNV(Device):
+    def __init__(self, dev):
+        Device.__init__(self, dev)
         self.__fm = _MixNVFM(self)
-
-    def _send_cmd(self, s):
-        if isinstance(s, _unicode):
-            s = s.encode()
-        self.__serial.write(s)
-        res = self.__serial.read(4096).decode()
-        self.__wait()
-        return res
 
     @property
     def freq(self):

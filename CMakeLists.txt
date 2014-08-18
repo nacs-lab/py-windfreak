@@ -1,4 +1,4 @@
-project(py-mixnv)
+project(py-windfreak)
 
 ## Setup
 cmake_minimum_required(VERSION 2.8)
@@ -15,4 +15,4 @@ cmake_c_add_flags(CMAKE_CXX_FLAGS -Wall -Wextra
 cmake_c_add_flags(CMAKE_SHARED_LINKER_FLAGS -Wl,--as-needed -Wl,--no-undefined)
 cmake_c_add_flags(CMAKE_MODULE_LINKER_FLAGS -Wl,--as-needed -Wl,--no-undefined)
 
-add_subdirectory(mixnv)
+add_subdirectory(windfreak)
