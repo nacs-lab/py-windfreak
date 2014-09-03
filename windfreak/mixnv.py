@@ -140,3 +140,6 @@ class MixNV(Device):
     @property
     def phase_locked(self):
         return bool(int(self._send_cmd(b'p')))
+
+    def __repr__(self):
+        return self.help_info
